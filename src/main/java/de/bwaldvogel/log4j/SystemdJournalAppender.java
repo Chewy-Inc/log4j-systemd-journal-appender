@@ -1,19 +1,5 @@
 package de.bwaldvogel.log4j;
 
-import com.sun.jna.Native;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.core.Filter;
-import org.apache.logging.log4j.core.Layout;
-import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.appender.AbstractAppender;
-import org.apache.logging.log4j.core.config.Configuration;
-import org.apache.logging.log4j.core.config.plugins.Plugin;
-import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
-import org.apache.logging.log4j.core.config.plugins.PluginConfiguration;
-import org.apache.logging.log4j.core.config.plugins.PluginElement;
-import org.apache.logging.log4j.core.config.plugins.PluginFactory;
-import org.apache.logging.log4j.core.util.Booleans;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.dotcms.repackage.org.apache.logging.log4j.Level;
+import com.dotcms.repackage.org.apache.logging.log4j.core.Filter;
+import com.dotcms.repackage.org.apache.logging.log4j.core.Layout;
+import com.dotcms.repackage.org.apache.logging.log4j.core.LogEvent;
+import com.dotcms.repackage.org.apache.logging.log4j.core.appender.AbstractAppender;
+import com.dotcms.repackage.org.apache.logging.log4j.core.config.Configuration;
+import com.dotcms.repackage.org.apache.logging.log4j.core.config.plugins.*;
+import com.dotcms.repackage.org.apache.logging.log4j.core.util.Booleans;
+import com.sun.jna.Native;
 
 @Plugin(name = "SystemdJournal", category = "Core", elementType = "appender", printObject = true)
 public class SystemdJournalAppender extends AbstractAppender {
@@ -66,18 +62,18 @@ public class SystemdJournalAppender extends AbstractAppender {
 
     @PluginFactory
     public static SystemdJournalAppender createAppender(@PluginAttribute("name") final String name,
-            @PluginAttribute("ignoreExceptions") final String ignoreExceptionsString,
-            @PluginAttribute("logSource") final String logSourceString,
-            @PluginAttribute("logStacktrace") final String logStacktraceString,
-            @PluginAttribute("logLoggerName") final String logLoggerNameString,
-            @PluginAttribute("logAppenderName") final String logAppenderNameString,
-            @PluginAttribute("logThreadName") final String logThreadNameString,
-            @PluginAttribute("logThreadContext") final String logThreadContextString,
-            @PluginAttribute("threadContextPrefix") final String threadContextPrefix,
-            @PluginAttribute("syslogIdentifier") final String syslogIdentifier,
-            @PluginElement("Layout") final Layout layout,
-            @PluginElement("Filter") final Filter filter,
-            @PluginConfiguration final Configuration config) {
+                                                        @PluginAttribute("ignoreExceptions") final String ignoreExceptionsString,
+                                                        @PluginAttribute("logSource") final String logSourceString,
+                                                        @PluginAttribute("logStacktrace") final String logStacktraceString,
+                                                        @PluginAttribute("logLoggerName") final String logLoggerNameString,
+                                                        @PluginAttribute("logAppenderName") final String logAppenderNameString,
+                                                        @PluginAttribute("logThreadName") final String logThreadNameString,
+                                                        @PluginAttribute("logThreadContext") final String logThreadContextString,
+                                                        @PluginAttribute("threadContextPrefix") final String threadContextPrefix,
+                                                        @PluginAttribute("syslogIdentifier") final String syslogIdentifier,
+                                                        @PluginElement("Layout") final Layout layout,
+                                                        @PluginElement("Filter") final Filter filter,
+                                                        @PluginConfiguration final Configuration config) {
         final boolean ignoreExceptions = Booleans.parseBoolean(ignoreExceptionsString, true);
         final boolean logSource = Booleans.parseBoolean(logSourceString, false);
         final boolean logStacktrace = Booleans.parseBoolean(logStacktraceString, true);
@@ -112,19 +108,19 @@ public class SystemdJournalAppender extends AbstractAppender {
         // #define LOG_DEBUG 7 - debug-level messages
         //
         switch (level.getStandardLevel()) {
-        case FATAL:
-            return 2; // LOG_CRIT
-        case ERROR:
-            return 3; // LOG_ERR
-        case WARN:
-            return 4; // LOG_WARNING
-        case INFO:
-            return 6; // LOG_INFO
-        case DEBUG:
-        case TRACE:
-            return 7; // LOG_DEBUG
-        default:
-            throw new IllegalArgumentException("Cannot map log level: " + level);
+            case FATAL:
+                return 2; // LOG_CRIT
+            case ERROR:
+                return 3; // LOG_ERR
+            case WARN:
+                return 4; // LOG_WARNING
+            case INFO:
+                return 6; // LOG_INFO
+            case DEBUG:
+            case TRACE:
+                return 7; // LOG_DEBUG
+            default:
+                throw new IllegalArgumentException("Cannot map log level: " + level);
         }
     }
 
@@ -136,7 +132,6 @@ public class SystemdJournalAppender extends AbstractAppender {
 
         args.add("PRIORITY=%d");
         args.add(Integer.valueOf(log4jLevelToJournalPriority(event.getLevel())));
-
         if (logThreadName) {
             args.add("THREAD_NAME=%s");
             args.add(event.getThreadName());

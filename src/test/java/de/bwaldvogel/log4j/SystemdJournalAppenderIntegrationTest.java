@@ -1,8 +1,8 @@
 package de.bwaldvogel.log4j;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.ThreadContext;
+import com.dotcms.repackage.org.apache.logging.log4j.LogManager;
+import com.dotcms.repackage.org.apache.logging.log4j.Logger;
+import com.dotcms.repackage.org.apache.logging.log4j.ThreadContext;
 import org.junit.Before;
 import org.junit.Test;
 
